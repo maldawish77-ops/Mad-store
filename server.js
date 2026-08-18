@@ -3,7 +3,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const path = require('path');
-const { Pool } = require('pg');
+const { getPool, ensureDatabase } = require('./db');
 
 const app = express();
 const ROOT = __dirname;
@@ -11,21 +11,17 @@ const PORT = Number(process.env.PORT || 3000);
 const IS_PROD = (process.env.NODE_ENV || 'development') === 'production';
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'MAD-ADMIN-2026';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-this-session-secret';
-const DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_URL = process.env.DATABASE_URL || '';
 const MOYASAR_PUBLISHABLE_KEY = process.env.MOYASAR_PUBLISHABLE_KEY || '';
 const MOYASAR_SECRET_KEY = process.env.MOYASAR_SECRET_KEY || '';
 const PUBLIC_BASE_URL = (process.env.PUBLIC_BASE_URL || '').replace(/\/$/, '');
 
-if (!DATABASE_URL) {
-  console.error('DATABASE_URL is required');
-  process.exit(1);
-}
-if (IS_PROD && (ADMIN_TOKEN === 'MAD-ADMIN-2026' || SESSION_SECRET === 'change-this-session-secret')) {
-  console.error('Production requires secure ADMIN_TOKEN and SESSION_SECRET');
-  process.exit(1);
-}
+const CONFIG_ERRORS = [];
+if (!DATABASE_URL) CONFIG_ERRORS.push('DATABASE_URL is required');
+if (IS_PROD && ADMIN_TOKEN === 'MAD-ADMIN-2026') CONFIG_ERRORS.push('ADMIN_TOKEN must be changed in production');
+if (IS_PROD && SESSION_SECRET === 'change-this-session-secret') CONFIG_ERRORS.push('SESSION_SECRET must be changed in production');
 
-const pool = new Pool({ connectionString: DATABASE_URL, max: 8, idleTimeoutMillis: 30000 });
+const pool = getPool();
 const now = () => new Date().toISOString();
 
 app.disable('x-powered-by');
@@ -36,6 +32,17 @@ app.use((req, res, next) => {
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   next();
+});
+
+app.use('/api', async (_req, res, next) => {
+  if (CONFIG_ERRORS.length) return res.status(503).json({ error: 'Server configuration incomplete', details: CONFIG_ERRORS });
+  try {
+    await ensureDatabase();
+    next();
+  } catch (err) {
+    console.error('database initialization error', err);
+    res.status(503).json({ error: 'Database unavailable' });
+  }
 });
 
 const parseCookies = req => Object.fromEntries((req.headers.cookie || '').split(';').filter(Boolean).map(v => {
@@ -259,9 +266,16 @@ app.use((_req, res) => res.status(404).send('Not found'));
 app.use((err, _req, res, _next) => { console.error(err); res.status(500).json({ error: 'Server error' }); });
 
 async function start() {
-  await pool.query('SELECT 1');
-  if (require.main === module) app.listen(PORT, '0.0.0.0', () => console.log(`MAD Store: http://localhost:${PORT}`));
+  if (CONFIG_ERRORS.length) {
+    console.warn('MAD Store configuration incomplete:', CONFIG_ERRORS.join('; '));
+  } else {
+    await ensureDatabase();
+  }
+  app.listen(PORT, '0.0.0.0', () => console.log(`MAD Store: http://localhost:${PORT}`));
 }
-start().catch(e => { console.error(e); process.exit(1); });
+
+if (require.main === module) {
+  start().catch(e => { console.error(e); process.exitCode = 1; });
+}
 
 module.exports = app;
