@@ -1,0 +1,16 @@
+{
+  "name": "mad-store-production",
+  "version": "5.0.0",
+  "private": true,
+  "description": "MAD Store production build with Neon Postgres and Moyasar payment verification",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "check": "node --check server.js && node --check app.js && node --check admin.js && node --check account.js && node --check settings.js && node --check payment-callback.js"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  }
+}

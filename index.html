@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MAD | ماد - متجر إلكتروني عربي وإنجليزي" />
+  <title>MAD | ماد</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/moyasar-payment-form@2.2.10/dist/moyasar.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/moyasar-payment-form@2.2.10/dist/moyasar.umd.min.js"></script>
+</head>
+<body>
+  <div class="announcement" data-i18n="announcement">شحن مجاني للطلبات فوق 299 ر.س داخل المملكة</div>
+
+  <header class="header">
+    <div class="container header-grid">
+      <button class="icon-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">☰</button>
+
+      <a class="brand" href="#home" aria-label="MAD home">
+        <span class="brand-en">MAD</span>
+        <span class="brand-ar">ماد</span>
+      </a>
+
+      <div class="search-wrap">
+        <input id="searchInput" type="search" placeholder="ابحث عن منتج..." data-i18n-placeholder="searchPlaceholder" />
+        <button id="searchBtn" aria-label="بحث">⌕</button>
+      </div>
+
+      <div class="header-actions">
+        <button class="text-btn" id="langBtn">EN</button>
+        <button class="icon-btn" id="wishlistBtn" title="المفضلة">♡</button>
+        <button class="icon-btn cart-btn" id="cartBtn" title="السلة">
+          🛍
+          <span class="badge" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="nav" id="mainNav">
+      <div class="container nav-links">
+        <a href="#home" data-i18n="home">الرئيسية</a>
+        <a href="#categories" data-i18n="categories">الأقسام</a>
+        <a href="#products" data-i18n="products">المنتجات</a>
+        <a href="#offers" data-i18n="offers">العروض</a>
+        <a href="#digital" data-i18n="digital">الخدمات الرقمية</a>
+        <a href="#about" data-i18n="about">من نحن</a>
+        <a href="#contact" data-i18n="contact">تواصل معنا</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow" data-i18n="heroEyebrow">تجربة تسوق استثنائية</span>
+          <h1 data-i18n="heroTitle">كل ما تحتاجه<br>في مكان واحد</h1>
+          <p data-i18n="heroText">منتجات مختارة، أسعار منافسة، وتجربة شراء عربية وإنجليزية مصممة للسوق السعودي.</p>
+          <div class="hero-actions">
+            <a class="btn btn-gold" href="#products" data-i18n="shopNow">تسوق الآن</a>
+            <a class="btn btn-outline" href="#about" data-i18n="discover">اكتشف ماد</a>
+          </div>
+          <div class="trust-row">
+            <span>✓ <b data-i18n="securePayment">دفع آمن</b></span>
+            <span>✓ <b data-i18n="fastDelivery">توصيل سريع</b></span>
+            <span>✓ <b data-i18n="easyReturn">إرجاع سهل</b></span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="gold-orbit orbit-1"></div>
+          <div class="gold-orbit orbit-2"></div>
+          <div class="hero-product hero-headphones">🎧</div>
+          <div class="hero-product hero-watch">⌚</div>
+          <div class="hero-product hero-perfume">▣</div>
+          <div class="hero-bag">
+            <span>MAD</span>
+            <small>ماد</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="categories">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-i18n="browse">تصفح حسب</span>
+            <h2 data-i18n="categoryTitle">أقسام المتجر</h2>
+          </div>
+        </div>
+        <div class="category-grid" id="categoryGrid"></div>
+      </div>
+    </section>
+
+    <section class="section alt" id="products">
+      <div class="container">
+        <div class="section-head products-head">
+          <div>
+            <span class="eyebrow" data-i18n="selectedForYou">مختارة لك</span>
+            <h2 data-i18n="bestProducts">أفضل المنتجات</h2>
+          </div>
+          <div class="filters" id="filters"></div>
+        </div>
+        <div class="products-grid" id="productsGrid"></div>
+      </div>
+    </section>
+
+    <section class="offer-section" id="offers">
+      <div class="container offer-card">
+        <div>
+          <span class="eyebrow" data-i18n="limitedOffer">عرض محدود</span>
+          <h2 data-i18n="offerTitle">خصم يصل إلى 40%</h2>
+          <p data-i18n="offerText">على تشكيلة مختارة من الإلكترونيات والعطور والإكسسوارات.</p>
+          <a href="#products" class="btn btn-gold" data-i18n="shopOffer">تسوق العرض</a>
+        </div>
+        <div class="offer-number">40<span>%</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="digital">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" data-i18n="digitalEyebrow">حلول احترافية</span>
+            <h2 data-i18n="digitalTitle">خدمات ومنتجات رقمية</h2>
+          </div>
+        </div>
+        <div class="service-grid">
+          <article class="service-card"><span>▤</span><h3 data-i18n="cvService">تصميم سيرة ذاتية</h3><p data-i18n="cvDesc">سيرة احترافية عربية أو إنجليزية.</p></article>
+          <article class="service-card"><span>▰</span><h3 data-i18n="slidesService">عروض تقديمية</h3><p data-i18n="slidesDesc">تصميم أكاديمي وتجاري احترافي.</p></article>
+          <article class="service-card"><span>✦</span><h3 data-i18n="socialService">تصاميم السوشيال</h3><p data-i18n="socialDesc">منشورات وإعلانات متوافقة مع الهوية.</p></article>
+          <article class="service-card"><span>⌁</span><h3 data-i18n="supportService">إدارة العملاء</h3><p data-i18n="supportDesc">ردود، متابعة، وتنظيم تجربة العميل.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="about">
+      <div class="container about-grid">
+        <div>
+          <span class="eyebrow">MAD | ماد</span>
+          <h2 data-i18n="aboutTitle">علامة سعودية بطموح كبير</h2>
+          <p data-i18n="aboutText">ماد متجر إلكتروني متعدد الأقسام، يجمع المنتجات والخدمات الرقمية في تجربة واحدة، مع تصميم فاخر وخدمة موثوقة وسهلة.</p>
+        </div>
+        <div class="stats">
+          <div><strong>10+</strong><span data-i18n="departments">أقسام</span></div>
+          <div><strong>24/7</strong><span data-i18n="support">دعم العملاء</span></div>
+          <div><strong>2</strong><span data-i18n="languages">لغتان</span></div>
+          <div><strong>100%</strong><span data-i18n="responsive">متوافق مع الجوال</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-brand"><span class="brand-en">MAD</span><span class="brand-ar">ماد</span></div>
+        <p data-i18n="footerText">كل ما تحتاجه في مكان واحد.</p>
+      </div>
+      <div><h4 data-i18n="quickLinks">روابط سريعة</h4><a href="#products" data-i18n="products">المنتجات</a><a href="#offers" data-i18n="offers">العروض</a><a href="#about" data-i18n="about">من نحن</a><a href="/admin.html">لوحة الإدارة</a></div>
+      <div><h4 data-i18n="policies">السياسات</h4><a href="#" data-i18n="privacy">الخصوصية</a><a href="#" data-i18n="returns">الإرجاع والاستبدال</a><a href="#" data-i18n="terms">الشروط والأحكام</a></div>
+      <div><h4 data-i18n="contact">تواصل معنا</h4><p>info@madstore.sa</p><p>+966 50 000 0000</p><p>Riyadh, Saudi Arabia</p></div>
+    </div>
+    <div class="copyright">© 2026 MAD | ماد — All rights reserved.</div>
+  </footer>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-header">
+      <h3 data-i18n="yourCart">سلة التسوق</h3>
+      <button class="icon-btn" id="closeCart">×</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-row"><span data-i18n="total">الإجمالي</span><strong id="cartTotal">0 ر.س</strong></div>
+      <button class="btn btn-gold full" id="checkoutBtn" data-i18n="checkout">إتمام الطلب</button>
+    </div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="closeCheckout">×</button>
+      <h2 data-i18n="checkoutTitle">إتمام الطلب</h2>
+      <form id="checkoutForm">
+        <label><span data-i18n="fullName">الاسم الكامل</span><input required name="name"></label>
+        <label><span data-i18n="phone">رقم الجوال</span><input required name="phone" inputmode="tel"></label>
+        <label><span data-i18n="city">المدينة</span><input required name="city"></label>
+        <label><span data-i18n="address">العنوان</span><textarea required name="address"></textarea></label>
+        <p class="payment-note" id="paymentNote">الدفع إلكترونيًا عبر مدى / Visa / Mastercard.</p>
+        <button class="btn btn-gold full" type="submit" data-i18n="placeOrder">المتابعة للدفع</button>
+        <div id="moyasarContainer" hidden>
+          <div class="mysr-form"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
